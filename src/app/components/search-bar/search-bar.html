@@ -1,0 +1,12 @@
+<div class="search">
+  <label for="title" class="sr-only">Search a movie by title</label>
+  <fa-icon class="icon" [icon]="faMagnifyingGlass" />
+  <input
+    type="search"
+    id="title"
+    #movieTitle
+    placeholder="Search a title, e.g. Dexter"
+    autocomplete="off"
+    (input)="getMovieByTitle(movieTitle.value)"
+  />
+</div>

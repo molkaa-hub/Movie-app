@@ -1,0 +1,43 @@
+<article class="card">
+  <a class="poster-link" [routerLink]="['/', movie().id]" tabindex="-1" aria-hidden="true">
+    <div class="poster">
+      @if (posterUrl(); as src) {
+        <img [src]="src" alt="" loading="lazy" />
+      } @else {
+        <div class="no-poster">{{ movie().title }}</div>
+      }
+    </div>
+  </a>
+
+  @if (!removable()) {
+    <button
+      type="button"
+      class="heart"
+      [class.active]="inWishList()"
+      [attr.aria-pressed]="inWishList()"
+      [attr.aria-label]="heartLabel() + ': ' + movie().title"
+      [title]="heartLabel()"
+      (click)="toggle()"
+    >
+      <fa-icon [icon]="faHeart" />
+    </button>
+  }
+
+  <div class="info">
+    <h3><a [routerLink]="['/', movie().id]">{{ movie().title }}</a></h3>
+    <p class="meta">
+      @if (movie().vote_average > 0) {
+        <span class="rating"><fa-icon [icon]="faStar" /> {{ movie().vote_average | number: '1.1-1' }}</span>
+      }
+      @if (year()) {
+        <span>{{ year() }}</span>
+      }
+    </p>
+
+    @if (removable()) {
+      <button type="button" class="btn btn-danger remove" (click)="remove()">
+        <fa-icon [icon]="faTrashCan" /> Remove
+      </button>
+    }
+  </div>
+</article>

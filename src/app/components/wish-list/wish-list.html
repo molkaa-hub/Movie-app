@@ -1,0 +1,24 @@
+<section class="page">
+  <div class="page-head">
+    <h2>My wish list</h2>
+    @if (movieService.wishCount() > 0) {
+      <p class="summary">
+        {{ movieService.wishCount() }} {{ movieService.wishCount() === 1 ? 'movie' : 'movies' }} saved
+      </p>
+    }
+  </div>
+
+  @if (movieService.wishList().length > 0) {
+    <ul class="movie-grid">
+      @for (movie of movieService.wishList(); track movie.id) {
+        <li><app-movie-card [movie]="movie" [removable]="true" /></li>
+      }
+    </ul>
+  } @else {
+    <div class="empty">
+      <h3>Your wish list is empty</h3>
+      <p>Tap the heart on a movie to save it here.</p>
+      <a class="btn btn-primary" routerLink="/">Browse movies</a>
+    </div>
+  }
+</section>

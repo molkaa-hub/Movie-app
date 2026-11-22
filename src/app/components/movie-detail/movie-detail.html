@@ -1,0 +1,77 @@
+@if (movie(); as m) {
+  <article class="hero">
+    @if (backdropUrl(); as backdrop) {
+      <div class="backdrop" [style.background-image]="'url(' + backdrop + ')'" aria-hidden="true"></div>
+    }
+
+    <div class="hero-inner">
+      <div class="poster">
+        @if (posterUrl(); as src) {
+          <img [src]="src" [alt]="'Poster of ' + m.title" />
+        } @else {
+          <div class="no-poster">{{ m.title }}</div>
+        }
+      </div>
+
+      <div class="content">
+        <h2>{{ m.title }}</h2>
+
+        @if (m.genres?.length) {
+          <ul class="genres">
+            @for (genre of m.genres; track genre.id) {
+              <li>{{ genre.name }}</li>
+            }
+          </ul>
+        }
+
+        <p class="overview">{{ m.overview || 'No overview available for this movie.' }}</p>
+
+        <dl class="facts">
+          <div>
+            <dt>Original title</dt>
+            <dd>{{ m.original_title }}</dd>
+          </div>
+          <div>
+            <dt>Original language</dt>
+            <dd>{{ languageName() }}</dd>
+          </div>
+          <div>
+            <dt>Release date</dt>
+            <dd>{{ (m.release_date | date: 'longDate') || '—' }}</dd>
+          </div>
+          <div>
+            <dt>Vote average</dt>
+            <dd class="score">{{ m.vote_average | number: '1.1-1' }}</dd>
+          </div>
+          <div>
+            <dt>Vote count</dt>
+            <dd>{{ m.vote_count | number }}</dd>
+          </div>
+        </dl>
+
+        <div class="actions">
+          <a class="btn btn-ghost" routerLink="/">
+            <fa-icon [icon]="faArrowLeft" /> Back to movie list
+          </a>
+
+          @if (inWishList()) {
+            <button type="button" class="btn btn-danger" (click)="toggleWishList()">
+              <fa-icon [icon]="faTrashCan" /> Remove from wish list
+            </button>
+          } @else {
+            <button type="button" class="btn btn-primary" (click)="toggleWishList()">
+              <fa-icon [icon]="faHeart" /> Add to wish list
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </article>
+} @else if (failed()) {
+  <div class="page">
+    <p class="state" role="alert">This movie could not be loaded.</p>
+    <p class="state"><a class="btn btn-ghost" routerLink="/">Back to movie list</a></p>
+  </div>
+} @else {
+  <p class="state" role="status">Loading movie…</p>
+}

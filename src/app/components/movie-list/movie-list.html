@@ -1,0 +1,22 @@
+<section class="page">
+  <div class="page-head">
+    <h2>Now playing</h2>
+    <app-search-bar />
+  </div>
+
+  @if (movieService.movieList().length > 0) {
+    <ul class="movie-grid">
+      @for (movie of movieService.movieList(); track movie.id) {
+        <li><app-movie-card [movie]="movie" /></li>
+      }
+    </ul>
+  } @else if (failed()) {
+    <p class="state" role="alert">
+      The movies could not be loaded. Check your internet connection and your TMDB API key, then reload the page.
+    </p>
+  } @else if (loaded()) {
+    <p class="state">No movie matches your search. Try another title.</p>
+  } @else {
+    <p class="state" role="status">Loading movies…</p>
+  }
+</section>
